@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+ <div class="media">
+        
+        <img class="rounded-circle account-img" src="{{ user.facultyprofile.image.url }}">
+       
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+      </div>
+    </div>
+<div class="tabs">
+    <input type="radio" name="tabs" id="tabone" checked="checked">
+    <label for="tabone">Publications</label>
+    <div class="tab">
+        {{ user.facultyprofile.about | safe }}
+    </div>
+    
+    <input type="radio" name="tabs" id="tabtwo">
+    <label for="tabtwo">Articles</label>
+    <div class="tab">
+        {{ user.facultyprofile.articles | safe}}
+    </div>
+    
+    <input type="radio" name="tabs" id="tabthree">
+    <label for="tabthree">Projects</label>
+    <div class="tab">
+        {{ user.facultyprofile.projects | safe }}
+    </div>
+    </div>
+{% endblock content %}
