@@ -2,10 +2,6 @@
 {% load static %}
 {% block content %}
 
-    <form action='' method='GET' class="navbar-form pull-right">
-          <input type='text' class="input-medium search-query" name='q' placeholder='Search profiles'/>
-          <input type='submit' class="btn" value='Search'/>
-    </form>
     {% for profile in profiles %}
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ profile.image.url }}">
@@ -13,19 +9,6 @@
             <div class="article-metadata">
               <a class="mr-2" href="#">{{ profile.user.username }}</a>
 
-              {% if not user.is_anonymous %}
-                  <div id="favourite-section" style="display: flex ;justify-content: flex-end">
-                     <a href="{% url 'post-favourite' profile.id %}">
-                    {% if profile.is_favourite %}
-                        <i class="fas fa-bookmark fa-lg"></i>
-                    {% else %}
-                        <i class="far fa-bookmark fa-lg" ></i>
-                     {% endif %}
-                    </a>
-                </div>
-              {% else %}
-
-              {% endif %}
 
               <small class="text-muted">{{ profile.about|linebreaks }}</small>
             </div>

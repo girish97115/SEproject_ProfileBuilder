@@ -11,13 +11,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import FacultyProfile
 from search_listview.list import SearchableListView
 from users.models import User
+from django.urls import reverse
 
-# Create your views here.
-def home(request):
-    context = {
-        'posts': Post.objects.all()
-    }
-    return render(request, 'profiles/home.html', context)
 
 class FacultyProfileListView(ListView):
     model = FacultyProfile
@@ -25,31 +20,55 @@ class FacultyProfileListView(ListView):
     context_object_name = 'profiles'
     paginate_by = 5      
 
+
 class FacultySearchList(ListView):
     model = FacultyProfile
     template_name = 'profiles/search_listview.html'
     context_object_name = 'profiles'
-    paginate_by = 5    
-
-
+    paginate_by = 5
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
             users_list = User.objects.filter(username__icontains=query)
             object_list = FacultyProfile.objects.none()
             for users in users_list:
-                object_list = object_list.union(FacultyProfile.objects.filter(user = users))
+                object_list = object_list.union(FacultyProfile.objects.filter(user=users))
+
         else:
-            object_list = FacultyProfile.objects.all()  
+            object_list = FacultyProfile.objects.all()
+
+        for post in object_list:
+            if post.bookmark.filter(id=self.request.user.id).exists():
+                post.is_favourite = True
+            else:
+                post.is_favourite = False
         return object_list    
 
-def bookmark_profile(request, id):
-    profile = get_object_or_404(FacultyProfile, id = id)
-    if profile.bookmark.filter(id = request.user.id).exists():
-        post.bookmark.remove(request.user)
+
+def bookmark_profile(request, pk):
+    profile = get_object_or_404(FacultyProfile, id=pk)
+    if profile.bookmark.filter(id=request.user.id).exists():
+        profile.bookmark.remove(request.user)
     else:
-        post.bookmark.add(request.user)    
-    return HttpResponseRedirect(home)
-        
+        profile.bookmark.add(request.user)
+    return HttpResponseRedirect(reverse('home'))
+
+
 def FacultyInfo(request):
     return render(request, 'profiles/facultyinfo.html')
+
+
+class BookmarksListView(ListView, LoginRequiredMixin):
+    model = FacultyProfile
+    template_name = 'users/bookmarks.html'
+    context_object_name = 'profiles'
+    paginate_by = 5
+
+    def get_queryset(self):
+        profiles = FacultyProfile.objects.all()
+        object_list = []
+        for profile in profiles:
+            if profile.bookmark.filter(id=self.request.user.id).exists():
+                object_list.append(profile)
+
+        return object_list
