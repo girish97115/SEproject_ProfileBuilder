@@ -2,30 +2,30 @@
 {% block content %}
  <div class="media">
         
-        <img class="rounded-circle account-img" src="{{ user.facultyprofile.image.url }}">
+        <img class="rounded-circle account-img" src="{{ profile.image.url }}">
        
         <div class="media-body">
-          <h2 class="account-heading">{{ user.username }}</h2>
-          <p class="text-secondary">{{ user.email }}</p>
+          <h2 class="account-heading">{{ profile.user.username }}</h2>
+          <p class="text-secondary">{{ profile.user.email }}</p>
       </div>
     </div>
 <div class="tabs">
     <input type="radio" name="tabs" id="tabone" checked="checked">
     <label for="tabone">Publications</label>
     <div class="tab">
-        {{ user.facultyprofile.about | safe }}
+        {{ profile.about | safe }}
     </div>
     
     <input type="radio" name="tabs" id="tabtwo">
     <label for="tabtwo">Articles</label>
     <div class="tab">
-        {{ user.facultyprofile.articles | safe}}
+        {{ profile.articles | safe}}
     </div>
     
     <input type="radio" name="tabs" id="tabthree">
     <label for="tabthree">Projects</label>
     <div class="tab">
-        {{ user.facultyprofile.projects | safe }}
+        {{ profile.projects | safe }}
     </div>
     </div>
 {% endblock content %}

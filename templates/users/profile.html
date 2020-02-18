@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+
+<link href=”{{ STATIC_URL }}jquery-autosuggest/css/autoSuggest-upshot.css”
+        type=”text/css” media=”all” rel=”stylesheet” />
+<script type=”text/javascript”
+        src=”{{ STATIC_URL }}jquery-autosuggest/js/jquery.autoSuggest.minified.js”> </script>
+
+
 {% load crispy_forms_tags %}
 {% block content %}
     <div class="content-section">

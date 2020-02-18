@@ -7,7 +7,7 @@
           <img class="rounded-circle article-img" src="{{ profile.image.url }}">
           <div class="media-body">
             <div class="article-metadata">
-              <a class="mr-2" href="#">{{ profile.user.username }}</a>
+              <a class="mr-2" href="{% url 'faculty-info' profile.id %}">{{ profile.user.username }}</a>
 
 
               <small class="text-muted">{{ profile.about|linebreaks }}</small>

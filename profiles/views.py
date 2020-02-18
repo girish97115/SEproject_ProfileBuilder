@@ -18,14 +18,14 @@ class FacultyProfileListView(ListView):
     model = FacultyProfile
     template_name = 'profiles/home.html'
     context_object_name = 'profiles'
-    paginate_by = 5      
+    paginate_by = 4
 
 
 class FacultySearchList(ListView):
     model = FacultyProfile
     template_name = 'profiles/search_listview.html'
     context_object_name = 'profiles'
-    paginate_by = 5
+    paginate_by = 4
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
@@ -54,15 +54,16 @@ def bookmark_profile(request, pk):
     return HttpResponseRedirect(reverse('home'))
 
 
-def FacultyInfo(request):
-    return render(request, 'profiles/facultyinfo.html')
+def faculty_info(request, pk):
+    profile = get_object_or_404(FacultyProfile, id=pk)
+    return render(request, 'profiles/facultyinfo.html', {'profile': profile})
 
 
 class BookmarksListView(ListView, LoginRequiredMixin):
     model = FacultyProfile
     template_name = 'users/bookmarks.html'
     context_object_name = 'profiles'
-    paginate_by = 5
+    paginate_by = 3
 
     def get_queryset(self):
         profiles = FacultyProfile.objects.all()
