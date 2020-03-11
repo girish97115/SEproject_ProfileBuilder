@@ -12,6 +12,8 @@ from .models import FacultyProfile
 from search_listview.list import SearchableListView
 from users.models import User
 from django.urls import reverse
+from users.forms import AppointmentCreationForm
+from django.contrib import messages
 
 
 class FacultyProfileListView(ListView):
@@ -26,6 +28,7 @@ class FacultySearchList(ListView):
     template_name = 'profiles/search_listview.html'
     context_object_name = 'profiles'
     paginate_by = 4
+
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:
@@ -52,6 +55,25 @@ def bookmark_profile(request, pk):
     else:
         profile.bookmark.add(request.user)
     return HttpResponseRedirect(reverse('home'))
+
+
+def make_appointment(request, pk):
+    faculty = get_object_or_404(FacultyProfile, id=pk)
+    student = request.user.studentprofile
+    if request.method == "POST":
+        form = AppointmentCreationForm(request.POST)
+        if form.is_valid():
+            appointment = form.save(commit=False)
+            appointment.faculty = faculty
+            appointment.student = student
+            appointment.save()
+            messages.success(request, f'Your Account has been updated!')
+            return HttpResponseRedirect(reverse('home'))
+
+    else:
+        form = AppointmentCreationForm()
+
+    return render(request, 'profiles/appointment.html', {'faculty': faculty, 'student': student, 'form':form})
 
 
 def faculty_info(request, pk):

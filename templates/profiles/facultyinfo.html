@@ -28,4 +28,7 @@
         {{ profile.projects | safe }}
     </div>
     </div>
+    <div>
+        <a class="btn btn-outline-info mb-4" href="{% url 'appointment' profile.id %} ">Book an Apppointment</a>
+    </div>
 {% endblock content %}

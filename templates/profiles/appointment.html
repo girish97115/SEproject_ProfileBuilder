@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="POST" class="post-form">{% csrf_token %}
+    {{ form.date }}
+    <button type="submit" class="btn btn-outline-info mb-4">Book an Apppointment</button>
+</form>
+{% endblock content %}
